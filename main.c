@@ -6,7 +6,9 @@
 #include <string.h>
 #include <malloc.h>
 #include "neural_network.h"
-//#include "data.h"
+#ifdef RUN_ORCA
+#include "data.h"
+#endif
 
 #if defined(_CHAR_WEIGHT_)
 	#include "char_weight.h"
@@ -56,32 +58,38 @@ int evaluate(char *Input)
 /* Main function. */
 int main(void){
 	#if !defined(_CONV_WEIGHTS_)
-	char Input[10][29*29] = {};
 
-	//Load gray scale image.
-	const char *bmp_path[10] = {"./Data/0.bmp",
-								"./Data/1.bmp",
-								"./Data/2.bmp",
-								"./Data/3.bmp",
-								"./Data/4.bmp",
-								"./Data/5.bmp",
-								"./Data/6.bmp",
-								"./Data/7.bmp",
-								"./Data/8.bmp",
-								"./Data/9.bmp"};
+	#ifndef RUN_ORCA
+
+		char Input[10][29*29] = {};
+
+		//Load gray scale image.
+		const char *bmp_path[10] = {"./Data/0.bmp",
+									"./Data/1.bmp",
+									"./Data/2.bmp",
+									"./Data/3.bmp",
+									"./Data/4.bmp",
+									"./Data/5.bmp",
+									"./Data/6.bmp",
+									"./Data/7.bmp",
+									"./Data/8.bmp",
+									"./Data/9.bmp"};
+	#endif // RUN_ORCA
 	int nb_idx, input_idx, result;
 	
 	for (nb_idx = 0; nb_idx < 10; nb_idx++) {
-		// Read the image
-		read_data(bmp_path[nb_idx], Input[nb_idx]);
-		// Print the handwritten digit : 
-		for(input_idx = 0; input_idx < IMG_WIDTH * IMG_HEIGHT; input_idx++) {
-			if((input_idx % IMG_WIDTH) == 0)
-				fputc('\n',stdout);
-			
-			fputc(Input[nb_idx][input_idx] + '0',stdout);
-		}
-		fputc('\n',stdout);
+		#ifndef RUN_ORCA
+			// Read the image
+			read_data(bmp_path[nb_idx], Input[nb_idx]);
+			// Print the handwritten digit : 
+			for(input_idx = 0; input_idx < IMG_WIDTH * IMG_HEIGHT; input_idx++) {
+				if((input_idx % IMG_WIDTH) == 0)
+					fputc('\n',stdout);
+				
+				fputc(Input[nb_idx][input_idx] + '0',stdout);
+			}
+			fputc('\n',stdout);
+		#endif // RUN_ORCA
 		
 		// Run the neural network to recognized the digit : 
 		result = evaluate(Input[nb_idx]);
@@ -92,7 +100,9 @@ int main(void){
 		}
 		
 	}
-	write_data(Input, 10);
+	#ifndef RUN_ORCA
+		write_data(Input, 10);
+	#endif // RUN_ORCA
 	fprintf(stdout, "Success\n");
 	#else
 	#define NB_WEIGHTS_LAYER1 ((5 * 5 + 1) * 6)
