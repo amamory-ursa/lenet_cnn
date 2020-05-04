@@ -40,10 +40,10 @@ make char
 ./main_char
 ```
 
-With short, the inferences will pass, but with char, there will be a inference error in the 2nd image.
+With short, the inferences will pass, but with char, there will be an inference error in the 2nd image.
 
 
-To compile to ORCA
+Compiling to ORCA
 ----
 
 Edit Makefile-Orca to set the variables ORCA_SIM_DIR and ORCA_SW_DIR to point to 
@@ -52,6 +52,7 @@ Edit Makefile-Orca to set the variables ORCA_SIM_DIR and ORCA_SW_DIR to point to
 
 ```
 make -f Makefile-Orca all
+mkdir logs
 ```
 
 it will generate image.bin. Then run 
