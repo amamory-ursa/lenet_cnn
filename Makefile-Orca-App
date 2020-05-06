@@ -1,8 +1,8 @@
 # Do not modify the lines below
-#APP_NAME  := cpp-example
+APP_NAME  := lenet
 APP_DIR   := .
 APP_SRC   := .
-APP_INC   := $(APP_DIR)/data
+APP_INC   := $(APP_DIR)
 APP_LIB   := app-$(APP_NAME).a 
 
 INC_DIRS += -I$(APP_INC) -I/opt/gcc-riscv64/riscv-gcc-8.3.0-sifive/riscv64-unknown-elf/include/c++/8.3.0/
@@ -10,10 +10,15 @@ INC_DIRS += -I$(APP_INC) -I/opt/gcc-riscv64/riscv-gcc-8.3.0-sifive/riscv64-unkno
 CFLAGS += -D_SHORT_WEIGHT_ -DRUN_ORCA
 CXXFLAGS += -std=c++0x -D_SHORT_WEIGHT_ -DRUN_ORCA
 ASMFLAGS +=
-LDFLAGS += --defsym=RAM_SIZE=4M
+LDFLAGS += --defsym=RAM_SIZE=4M 
+
+# define/undefine this symbol to turn newlib on/off
+USE_LIBC = 1
+# define/undefine this symbol to turn cpp on/off
+USE_CPP = 1
 
 # Update these lines with your source code
-APP_SRCS := main.c neural_network.c
+APP_SRCS := $(wildcard $(APP_SRC)/*.c)
 APP_OBJS +=  $(APP_SRCS:.c=.o)
 
 #$(info $$APP_OBJS is [${APP_OBJS}])
